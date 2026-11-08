@@ -5,7 +5,7 @@ edition = "2024"
 repository = "https://github.com/BoxCatGarden/type_identical"
 license = "MIT OR Apache-2.0"
 readme = "README.md"
-description = "Traits for type-identical."
+description = "Traits for type identity."
 keywords = ["identical", "same", "equal", "types", "traits"]
 publish = true
 

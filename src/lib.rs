@@ -1,4 +1,4 @@
-//! Traits for describing types.
+#![doc = include_str!("../README.md")]
 
 /// This trait denotes a type that has an associated type
 /// [`Itself`](Self::Itself).
