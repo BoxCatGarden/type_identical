@@ -2,16 +2,6 @@ This crate contains traits for type identity.
 
 # Examples of the use of trait `Identical<T>`
 
-Define an associated type in the trait definition.
-
-```rust, no_run
-use type_identical::{Identical, TypeItself};
-
-trait Trait<T> {
-    type Boxed: Identical<Box<T>>;
-}
-```
-
 Move the binding of a type parameter from the type to
 an associated function, as the `Foo::new` shows.
 
