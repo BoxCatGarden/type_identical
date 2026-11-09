@@ -31,15 +31,4 @@ pub trait Identical<T: ?Sized>: TypeItself<Itself = T> {}
 
 impl<T: ?Sized> Identical<T> for T {}
 
-#[cfg(test)]
-fn _test_type_itself() {
-    fn aaa<T: ?Sized>(m: &T) -> &<T as TypeItself>::Itself {
-        m
-    }
-
-    fn bbb<T: ?Sized + Identical<U>, U: ?Sized>() {}
-
-    bbb::<i32, _>();
-    bbb::<[i32], _>();
-    bbb::<dyn Send, _>();
-}
+mod tests;
