@@ -4,7 +4,7 @@
 /// ```no_run
 /// use type_identical::*;
 ///
-/// fn aaa<T: ?Sized>(m: &T) -> &<T as TypeItself>::Itself {
+/// fn aaa<T: ?Sized>(m: &T) -> &<T as IdenticalType>::IdenticalTy {
 ///     m
 /// }
 /// ```
@@ -12,7 +12,7 @@
 /// ```no_run
 /// use type_identical::*;
 ///
-/// fn aaa<T: ?Sized + Identical<U>, U: ?Sized>(m: &U) -> &T::Itself {
+/// fn aaa<T: ?Sized + Identical<U>, U: ?Sized>(m: &U) -> &T::IdenticalTy {
 ///     m
 /// }
 /// ```
@@ -38,7 +38,7 @@
 /// ```compile_fail
 /// use type_identical::*;
 ///
-/// fn bbb<T: ?Sized + TypeItself<Itself = U>, U: ?Sized>() {}
+/// fn bbb<T: ?Sized + IdenticalType<IdenticalTy = U>, U: ?Sized>() {}
 ///
 /// bbb::<i32, ()>();
 /// ```
