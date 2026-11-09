@@ -4,16 +4,16 @@
 /// [`Itself`](Self::Itself).
 ///
 /// 'TypeItself' stands for the associated type '`type Itself`'.
-pub trait TypeItself {
+pub trait IdenticalType {
     /// The implementing type itself, i.e., `Self`.
     ///
     /// The blanket implementation of this trait makes
     /// this type always identical to `Self`.
-    type Itself: ?Sized;
+    type IdenticalTy: ?Sized;
 }
 
-impl<T: ?Sized> TypeItself for T {
-    type Itself = T;
+impl<T: ?Sized> IdenticalType for T {
+    type IdenticalTy = T;
 }
 
 /// This trait denotes that `Self` is identical to `T`.
@@ -27,7 +27,7 @@ impl<T: ?Sized> TypeItself for T {
 /// * `U: Identical<T>` can help to infer `T` from `U`, but cannot
 ///   help to infer `U` from `T`. `T: Identical<U>` can be
 ///   added to help to infer `U` from `T`.
-pub trait Identical<T: ?Sized>: TypeItself<Itself = T> {}
+pub trait Identical<T: ?Sized>: IdenticalType<IdenticalTy = T> {}
 
 impl<T: ?Sized> Identical<T> for T {}
 
