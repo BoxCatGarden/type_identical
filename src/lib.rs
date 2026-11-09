@@ -9,7 +9,7 @@ pub trait TypeItself {
     ///
     /// The blanket implementation of this trait makes
     /// this type always identical to `Self`.
-    type Itself: ?Sized + TypeItself<Itself = Self>;
+    type Itself: ?Sized;
 }
 
 impl<T: ?Sized> TypeItself for T {
