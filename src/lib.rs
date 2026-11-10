@@ -1,6 +1,6 @@
 #![doc = include_str!("../README.md")]
 
-/// This trait is used to assert that [`Type<T>`](Self::Type)
+/// This trait is used for asserting that [`Type<T>`](Self::Type)
 /// satisfies the constraints on it in an `Assert` trait bound.
 ///
 /// See the [crate documentation](crate) for examples.
