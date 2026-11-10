@@ -1,22 +1,56 @@
 #![doc = include_str!("../README.md")]
 
-/// This trait denotes a type that has an associated type
-/// [`Itself`](Self::Itself).
+/// This trait is used to assert that [`Type<T>`](Self::Type)
+/// satisfies the constraints on it in an `Assert` trait bound.
 ///
-/// 'TypeItself' stands for the associated type '`type Itself`'.
-pub trait IdenticalType {
-    /// The implementing type itself, i.e., `Self`.
+/// See the [crate documentation](crate) for examples.
+pub trait Assert {
+    /// The type to be evaluated, which is identical to the type `T`.
     ///
-    /// The blanket implementation of this trait makes
-    /// this type always identical to `Self`.
-    type IdenticalTy: ?Sized;
+    /// This type is always defined as `T` by the blanket
+    /// implementation of this trait for any type.
+    type Type<T: ?Sized>: ?Sized;
 }
 
-impl<T: ?Sized> IdenticalType for T {
-    type IdenticalTy = T;
+impl<T: ?Sized> Assert for T {
+    type Type<U: ?Sized> = U;
 }
+
+/// A type asserter.
+///
+/// This type is used for introducing `Assert` trait bounds.
+/// `Assert` trait bounds can be written on it.
+///
+/// # Examples
+///
+/// ```no_run
+/// use type_identical::*;
+///
+/// fn foo<T: ?Sized, U: ?Sized>()
+/// where
+///     Assertion: Assert<Type<T> = U>,
+/// {
+/// }
+/// ```
+///
+/// However, `Assert` trait bounds can also be written on other types,
+/// as the following shows.
+///
+/// ```no_run
+/// use type_identical::*;
+///
+/// fn foo<T: ?Sized, U: ?Sized>()
+/// where
+///     (): Assert<Type<T> = U>,
+/// {
+/// }
+/// ```
+#[derive(Debug)]
+pub struct Assertion;
 
 /// This trait denotes that `Self` is identical to `T`.
+///
+/// See the [crate documentation](crate) for examples.
 ///
 /// # Explainer of the `Identical` trait bound
 ///
@@ -27,7 +61,7 @@ impl<T: ?Sized> IdenticalType for T {
 /// * `U: Identical<T>` can help to infer `T` from `U`, but cannot
 ///   help to infer `U` from `T`. `T: Identical<U>` can be
 ///   added to help to infer `U` from `T`.
-pub trait Identical<T: ?Sized>: IdenticalType<IdenticalTy = T> {}
+pub trait Identical<T: ?Sized>: Assert<Type<T> = Self> {}
 
 impl<T: ?Sized> Identical<T> for T {}
 

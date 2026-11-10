@@ -2,7 +2,7 @@ This crate contains traits for type identity.
 
 # Examples
 
-Trait `Identical<T>` can be used to
+The trait [`Identical<T>`](crate::Identical) can be used to
 move the binding of a type parameter from the type to
 an associated function, as the `Foo::new` shows.
 
@@ -39,8 +39,8 @@ fn foo() {
 }
 ```
 
-`Foo::new` can also be implemented with trait `Assert`,
-as the following shows.
+`Foo::new` can also be implemented with the trait
+[`Assert`](crate::Assert), as the following shows.
 
 ```rust, no_run
 use type_identical::{Assert, Assertion};
