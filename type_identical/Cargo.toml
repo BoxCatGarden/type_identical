@@ -2,8 +2,8 @@
 name = "type-identical"
 version = "0.1.0"
 edition = "2024"
-repository = "https://github.com/BoxCatGarden/type_identical"
-license = "MIT OR Apache-2.0"
+repository.workspace = true
+license.workspace = true
 readme = "README.md"
 description = "Traits for type identity."
 keywords = ["identical", "same", "equal", "types", "traits"]

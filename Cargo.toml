@@ -1,0 +1,7 @@
+[workspace]
+resolver = "3"
+members = ["type_identical"]
+
+[workspace.package]
+repository = "https://github.com/BoxCatGarden/type_identical"
+license = "MIT OR Apache-2.0"
