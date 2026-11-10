@@ -18,8 +18,8 @@ impl<T: ?Sized> Assert for T {
 
 /// A type asserter.
 ///
-/// This type is used for introducing `Assert` trait bounds.
-/// `Assert` trait bounds can be written on it.
+/// This type is used for introducing [`Assert`] trait bounds.
+/// [`Assert`] trait bounds can be written on it.
 ///
 /// # Examples
 ///
@@ -33,7 +33,7 @@ impl<T: ?Sized> Assert for T {
 /// }
 /// ```
 ///
-/// However, `Assert` trait bounds can also be written on other types,
+/// However, [`Assert`] trait bounds can also be written on other types,
 /// as the following shows.
 ///
 /// ```no_run

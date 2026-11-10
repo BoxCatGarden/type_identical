@@ -35,7 +35,7 @@ impl<T: ?Sized> Trait<T> for MultipleImpl {}
 fn foo() {
     let _ = Foo::new(SingleImpl);
     let _ = Foo::new::<i32>(MultipleImpl);
-    let _ = Foo::new::<u64>(MultipleImpl);
+    let _ = Foo::new::<dyn Send>(MultipleImpl);
 }
 ```
 
@@ -57,7 +57,7 @@ impl<T: Trait<U>, U: ?Sized> Foo<T, U> {
 fn foo() {
     let _ = Foo::new(SingleImpl);
     let _ = Foo::new::<i32>(MultipleImpl);
-    let _ = Foo::new::<u64>(MultipleImpl);
+    let _ = Foo::new::<dyn Send>(MultipleImpl);
 }
 
 use std::marker::PhantomData;
