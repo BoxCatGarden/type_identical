@@ -3,7 +3,11 @@
 /// This trait is used for asserting that [`Type<T>`](Self::Type)
 /// satisfies the constraints on it in an `Assert` trait bound.
 ///
-/// See the [crate documentation](crate) for examples.
+/// The main use of `Assert` is to assert that a type `T` is identical
+/// to another type `U`, i.e., `Assert<Type<T> = U>`.
+/// The trait [`Identical`] is a special kind of `Assert` for that purpose.
+///
+/// See the [crate documentation](crate) and [`Assertion`] for examples.
 pub trait Assert {
     /// The type to be evaluated, which is identical to the type `T`.
     ///
@@ -16,12 +20,16 @@ impl<T: ?Sized> Assert for T {
     type Type<U: ?Sized> = U;
 }
 
-/// A type asserter.
+/// An asserter.
 ///
-/// This type is used for introducing [`Assert`] trait bounds.
+/// This type is used for adding [`Assert`] trait bounds in where-clauses.
 /// [`Assert`] trait bounds can be written on it.
 ///
 /// # Examples
+///
+/// In the following example, an [`Assert`] trait bound is written on
+/// `Assertion` in the where-clause, asserting that type `T` is
+/// identical to `U`.
 ///
 /// ```no_run
 /// use type_identical::*;
@@ -31,6 +39,9 @@ impl<T: ?Sized> Assert for T {
 ///     Assertion: Assert<Type<T> = U>,
 /// {
 /// }
+///
+/// foo::<i32, _>();
+/// foo::<_, i32>();
 /// ```
 ///
 /// However, [`Assert`] trait bounds can also be written on other types,
@@ -44,6 +55,9 @@ impl<T: ?Sized> Assert for T {
 ///     (): Assert<Type<T> = U>,
 /// {
 /// }
+///
+/// foo::<i32, _>();
+/// foo::<_, i32>();
 /// ```
 #[derive(Debug)]
 pub struct Assertion;

@@ -99,4 +99,4 @@
 /// ```
 #[cfg(doctest)]
 #[allow(non_camel_case_types)]
-struct _test_type_itself;
+struct _test_type_identical;
