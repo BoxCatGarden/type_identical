@@ -28,8 +28,8 @@ impl<T: ?Sized> Assert for T {
 /// # Examples
 ///
 /// In the following example, an [`Assert`] trait bound is written on
-/// `Assertion` in the where-clause, asserting that type `T` is
-/// identical to `U`.
+/// `Assertion` in the where-clause, asserting that the type `T` is
+/// identical to the type `U`.
 ///
 /// ```no_run
 /// use type_identical::*;
@@ -59,7 +59,6 @@ impl<T: ?Sized> Assert for T {
 /// foo::<i32, _>();
 /// foo::<_, i32>();
 /// ```
-#[derive(Debug)]
 pub struct Assertion;
 
 /// This trait denotes that `Self` is identical to `T`.
