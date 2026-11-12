@@ -1,4 +1,5 @@
 #![doc = include_str!("../README.md")]
+#![no_std]
 
 /// This trait is used for asserting that [`Type<T>`](Self::Type)
 /// satisfies the constraints on it in an `Assert` trait bound.
