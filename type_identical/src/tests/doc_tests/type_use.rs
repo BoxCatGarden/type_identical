@@ -31,5 +31,39 @@
 ///     m
 /// }
 /// ```
+///
+/// ```no_run
+/// use type_identical::*;
+///
+/// fn aaa<T: ?Sized, U: ?Sized>(m: &<Assertion as Assert>::Type<T>) -> &U
+/// where
+///     Assertion: Assert<Type<T> = U>,
+/// {
+///     m
+/// }
+/// ```
+///
+/// ```no_run
+/// use type_identical::*;
+///
+/// struct Bar<T: ?Sized>(*const T);
+///
+/// fn aaa<T: ?Sized + Identical<Bar<U>>, U: ?Sized>(m: &T) -> &T::Type<Bar<U>> {
+///     m
+/// }
+/// ```
+///
+/// ```no_run
+/// use type_identical::*;
+///
+/// struct Bar<T: ?Sized>(*const T);
+///
+/// fn aaa<T: ?Sized, U: ?Sized>(m: &<Assertion as Assert>::Type<T>) -> &Bar<U>
+/// where
+///     Assertion: Assert<Type<T> = Bar<U>>,
+/// {
+///     m
+/// }
+/// ```
 #[allow(non_camel_case_types)]
 struct _test_type_use;

@@ -51,5 +51,24 @@
 /// bbb::<Bar<dyn Send>, _, _>();
 /// bbb::<Bar<dyn Send>, dyn Send, Bar<dyn Send>>();
 /// ```
+///
+/// ```no_run
+/// use type_identical::*;
+///
+/// struct Bar<T: ?Sized>(*const T);
+///
+/// fn bbb<T: ?Sized, U: ?Sized>()
+/// where
+///     Assertion: Assert<Type<T> = Bar<U>>,
+/// {
+/// }
+///
+/// bbb::<Bar<i32>, _>();
+/// bbb::<Bar<[i32]>, _>();
+/// bbb::<Bar<dyn Send>, _>();
+/// bbb::<_, i32>();
+/// bbb::<_, [i32]>();
+/// bbb::<_, dyn Send>();
+/// ```
 #[allow(non_camel_case_types)]
 struct _test_type_infer;
