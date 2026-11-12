@@ -1,4 +1,11 @@
-This crate contains traits for type identity.
+This crate contains traits for asserting that:
+
+* a type is **identical** to another type; or in other words,
+* a type is **equal** to another type; or in other words,
+* a type is the **same** as another type.
+
+The main use of such assertions is to help to infer generic
+types `T` from types identical to `T` or some type like `Bar<T>`.
 
 # Examples
 
