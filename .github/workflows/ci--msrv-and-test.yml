@@ -29,9 +29,12 @@ jobs:
 
       - name: Cargo test on stable
         run: >
-          cargo test --color always --profile test
-          --no-fail-fast --verbose --workspace
-          -- --test-threads 5 --show-output
+          cargo test --workspace --profile test --verbose
+          --no-fail-fast -- --test-threads 5 --show-output
+      - name: Cargo test release on stable
+        run: >
+          cargo test --workspace --release --verbose
+          --no-fail-fast -- --test-threads 5 --show-output
 
       - name: Install cargo-msrv
         uses: taiki-e/install-action@v2
@@ -41,15 +44,18 @@ jobs:
       - name: MSRV verify for ${{ matrix.member }}
         run: cargo msrv verify --path ${{ matrix.member }}
 
-      - name: MSRV check
+      - name: MSRV build
         run: >
-          cargo msrv
-            -- cargo check --workspace --verbose --profile test
-              --color always
+          cargo msrv --
+          cargo build --workspace --release --verbose
 
       - name: MSRV test
         run: >
-          cargo msrv
-            -- cargo test --color always --profile test
-              --no-fail-fast --verbose --workspace
-              -- --test-threads 5 --show-output
+          cargo msrv --
+          cargo test --workspace --profile test --verbose
+          --no-fail-fast -- --test-threads 5 --show-output
+      - name: MSRV test release
+        run: >
+          cargo msrv --
+          cargo test --workspace --release --verbose
+          --no-fail-fast -- --test-threads 5 --show-output
