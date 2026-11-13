@@ -26,7 +26,8 @@ jobs:
 
       - name: Cargo test on stable
         run: >
-          cargo test --color always --profile test --no-fail-fast --verbose --workspace
+          cargo test --color always --profile test
+            --no-fail-fast --verbose --workspace
             -- --test-threads 5 --show-output
 
       - name: Install cargo-msrv
