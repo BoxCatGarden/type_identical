@@ -44,18 +44,18 @@ jobs:
       - name: MSRV verify for ${{ matrix.member }}
         run: cargo msrv verify --path ${{ matrix.member }}
 
-      - name: MSRV build
+      - name: MSRV verify build
         run: >
-          cargo msrv --
+          cargo msrv verify --
           cargo build --workspace --release --verbose
 
-      - name: MSRV test
+      - name: MSRV verify test
         run: >
-          cargo msrv --
+          cargo msrv verify --
           cargo test --workspace --profile test --verbose
           --no-fail-fast -- --test-threads 5 --show-output
-      - name: MSRV test release
+      - name: MSRV verify test release
         run: >
-          cargo msrv --
+          cargo msrv verify --
           cargo test --workspace --release --verbose
           --no-fail-fast -- --test-threads 5 --show-output
