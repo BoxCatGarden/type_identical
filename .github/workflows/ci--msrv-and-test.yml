@@ -24,16 +24,15 @@ jobs:
       - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
 
+      - name: Cargo test on stable
+        run: >
+          cargo test --color always --profile test --no-fail-fast --verbose --workspace
+            -- --test-threads 5 --show-output
+
       - name: Install cargo-msrv
         uses: taiki-e/install-action@v2
         with:
           tool: cargo-msrv
-
-      - name: Cargo test on stable
-        run: >
-          cargo test --color always --profile test
-            --no-fail-fast --verbose --workspace
-            -- --test-threads 5 --show-output
 
       - name: MSRV verify for ${{ matrix.member }}
         run: cargo msrv verify --path ${{ matrix.member }}
