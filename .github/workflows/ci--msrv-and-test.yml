@@ -8,16 +8,12 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  CARGO_TERM_VERBOSE: 1
 
 jobs:
   msrv-test:
     name: MSRV & Test
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        member:
-          - type_identical
     steps:
       - uses: actions/checkout@v6
 
@@ -41,8 +37,8 @@ jobs:
         with:
           tool: cargo-msrv
 
-      - name: MSRV verify for ${{ matrix.member }}
-        run: cargo msrv verify --path ${{ matrix.member }}
+      - name: MSRV verify
+        run: cargo msrv verify --workspace
 
       - name: MSRV verify build
         run: >
