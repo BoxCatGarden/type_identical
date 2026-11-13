@@ -1,0 +1,52 @@
+name: MSRV Check & Full Test
+
+on:
+  push:
+    tags:
+      - 'msrv-test'
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  msrv-test:
+    name: MSRV & Test
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        member:
+          - type_identical
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install cargo-msrv
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-msrv
+
+      - name: Cargo test on stable
+        run: >
+          cargo test --color always --profile test
+            --no-fail-fast --verbose --workspace
+            -- --test-threads 5 --show-output
+
+      - name: MSRV verify for ${{ matrix.member }}
+        run: cargo msrv verify --path ${{ matrix.member }}
+
+      - name: MSRV check
+        run: >
+          cargo msrv
+            -- cargo check --workspace --verbose --profile test
+              --color always
+
+      - name: MSRV test
+        run: >
+          cargo msrv
+            -- cargo test --color always --profile test
+              --no-fail-fast --verbose --workspace
+              -- --test-threads 5 --show-output
