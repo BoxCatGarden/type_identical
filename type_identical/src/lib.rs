@@ -77,6 +77,11 @@ pub struct Assertion;
 ///   added to help to infer `U` from `T`.
 pub trait Identical<T: ?Sized>: Assert<Type<T> = Self> {}
 
-impl<T: ?Sized> Identical<T> for T {}
+impl<T, U> Identical<U> for T
+where
+    T: ?Sized + Assert<Type<U> = T>,
+    U: ?Sized,
+{
+}
 
 mod tests;

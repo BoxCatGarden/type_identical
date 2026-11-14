@@ -39,10 +39,11 @@ struct MultipleImpl;
 
 impl<T: ?Sized> Trait<T> for MultipleImpl {}
 
-fn foo() {
+fn foo<T: ?Sized>() {
     let _ = Foo::new(SingleImpl);
     let _ = Foo::new::<i32>(MultipleImpl);
     let _ = Foo::new::<dyn Send>(MultipleImpl);
+    let _ = Foo::new::<T>(MultipleImpl);
 }
 ```
 
@@ -61,10 +62,11 @@ impl<T: Trait<U>, U: ?Sized> Foo<T, U> {
     }
 }
 
-fn foo() {
+fn foo<T: ?Sized>() {
     let _ = Foo::new(SingleImpl);
     let _ = Foo::new::<i32>(MultipleImpl);
     let _ = Foo::new::<dyn Send>(MultipleImpl);
+    let _ = Foo::new::<T>(MultipleImpl);
 }
 
 use std::marker::PhantomData;
