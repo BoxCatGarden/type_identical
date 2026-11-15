@@ -8,7 +8,7 @@ license.workspace = true
 readme = "README.md"
 description = "Traits for asserting that a type is identical to another (or, equal to another, the same as another)."
 keywords = ["identical-type", "same-type", "equal-type", "assert", "traits"]
-categories = ["no-std::no-alloc", "rust-patterns"]
+categories = ["no-std", "no-std::no-alloc", "rust-patterns"]
 publish = true
 
 [dependencies]
