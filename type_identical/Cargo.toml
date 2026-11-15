@@ -1,13 +1,13 @@
 [package]
 name = "type-identical"
-version = "1.0.0"
+version = "1.0.1"
 edition = "2024"
 rust-version = "1.89.0"
 repository.workspace = true
 license.workspace = true
 readme = "README.md"
 description = "Traits for asserting that a type is identical to another (or, equal to another, the same as another)."
-keywords = ["identical_type", "same_type", "equal_type", "assert", "traits"]
+keywords = ["identical-type", "same-type", "equal-type", "assert", "traits"]
 categories = ["no-std::no-alloc", "rust-patterns"]
 publish = true
 
