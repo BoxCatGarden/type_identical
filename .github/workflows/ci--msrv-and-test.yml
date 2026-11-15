@@ -3,7 +3,7 @@ name: MSRV Check & Full Test
 on:
   push:
     tags:
-      - 'pub v*'
+      - 'pub-v*'
   workflow_dispatch:
 
 env:
