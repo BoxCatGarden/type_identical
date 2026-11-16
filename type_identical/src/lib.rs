@@ -62,6 +62,14 @@ impl<T: ?Sized> Assert for T {
 /// ```
 pub struct Assertion;
 
+trait SealedIdentical<T: ?Sized> {
+    type NonDynCompatible<U: ?Sized>: ?Sized;
+}
+
+impl<T: ?Sized> SealedIdentical<T> for T {
+    type NonDynCompatible<U: ?Sized> = U;
+}
+
 /// This trait denotes that `Self` is identical to `T`.
 ///
 /// See the [crate documentation](crate) for examples.
@@ -75,13 +83,9 @@ pub struct Assertion;
 /// * `U: Identical<T>` can help to infer `T` from `U`, but cannot
 ///   help to infer `U` from `T`. `T: Identical<U>` can be
 ///   added to help to infer `U` from `T`.
-pub trait Identical<T: ?Sized>: Assert<Type<T> = Self> {}
+#[allow(private_bounds)]
+pub trait Identical<T: ?Sized>: SealedIdentical<T> {}
 
-impl<T, U> Identical<U> for T
-where
-    T: ?Sized + Assert<Type<U> = T>,
-    U: ?Sized,
-{
-}
+impl<T: ?Sized> Identical<T> for T {}
 
 mod tests;
