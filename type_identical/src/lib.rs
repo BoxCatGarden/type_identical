@@ -6,7 +6,6 @@
 ///
 /// The main use of `Assert` is to assert that a type `T` is identical
 /// to another type `U`, i.e., `Assert<Type<T> = U>`.
-/// The trait [`Identical`] is a special kind of `Assert` for that purpose.
 ///
 /// See the [crate documentation](crate) and [`Assertion`] for examples.
 pub trait Assert {
@@ -62,7 +61,18 @@ impl<T: ?Sized> Assert for T {
 /// ```
 pub struct Assertion;
 
+/// The sealed version of [`Identical`].
+///
+/// This trait is used for freezing the implementation of [`Identical`].
 trait SealedIdentical<T: ?Sized> {
+    /// A non-dyn-compatible associated type, making this trait
+    /// non-dyn-compatible.
+    ///
+    /// Some type like `dyn SealedIdentical<()>` implements
+    /// `SealedIdentical<()>`, meaning that the type `dyn SealedIdentical<()>`
+    /// is identical to the type `()`, which is a conflict.
+    /// Therefore, this trait should **not** be dyn compatible,
+    /// and **neither** should [`Identical`].
     type NonDynCompatible<U: ?Sized>: ?Sized;
 }
 
