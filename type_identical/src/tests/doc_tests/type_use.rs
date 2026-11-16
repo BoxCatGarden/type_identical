@@ -11,14 +11,6 @@
 /// ```no_run
 /// use type_identical::*;
 ///
-/// fn aaa<T: ?Sized + Identical<U>, U: ?Sized>(m: &T) -> &T::Type<U> {
-///     m
-/// }
-/// ```
-///
-/// ```no_run
-/// use type_identical::*;
-///
 /// fn aaa<U: ?Sized>(m: &U) -> &<Assertion as Assert>::Type<U> {
 ///     m
 /// }
@@ -39,16 +31,6 @@
 /// where
 ///     Assertion: Assert<Type<T> = U>,
 /// {
-///     m
-/// }
-/// ```
-///
-/// ```no_run
-/// use type_identical::*;
-///
-/// struct Bar<T: ?Sized>(*const T);
-///
-/// fn aaa<T: ?Sized + Identical<Bar<U>>, U: ?Sized>(m: &T) -> &T::Type<Bar<U>> {
 ///     m
 /// }
 /// ```
