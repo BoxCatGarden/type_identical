@@ -63,7 +63,11 @@ pub struct Assertion;
 
 /// The sealed version of [`Identical`].
 ///
-/// This trait is used for freezing the implementation of [`Identical`].
+/// This trait is the underlying trait of [`Identical`].
+/// This trait is used for:
+///
+/// * Freezing the implementation of [`Identical`].
+/// * Forbidding [`Identical`] to be used in `dyn` types.
 trait SealedIdentical<T: ?Sized> {
     /// An associated type that forbidding this trait
     /// to be used as trait or supertrait bounds in any `dyn` types,
