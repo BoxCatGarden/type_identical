@@ -61,45 +61,49 @@ impl<T: ?Sized> Assert for T {
 /// ```
 pub struct Assertion;
 
-/// The sealed version of [`Identical`].
-///
-/// This trait is the underlying trait of [`Identical`].
-/// This trait is used for:
-///
-/// * Freezing the implementation of [`Identical`].
-/// * Forbidding [`Identical`] to be used in `dyn` types.
-trait SealedIdentical<T: ?Sized> {
-    /// An associated type that forbidding this trait
-    /// to be used as trait or supertrait bounds in any `dyn` types,
-    /// at least outside this [`crate`].
-    ///
-    /// # Approaches to achieving the forbidding
-    ///
-    /// This type achieves the forbidding through
-    /// the following rules:
-    ///
-    /// * This type is **not** dyn compatible, so that this
-    ///   trait is **not** dyn compatible.
-    /// * This type is sealed, so that `dyn` types cannot specify
-    ///   this associated type outside this [`crate`].
-    ///   Because `dyn` types have to specify their associated types,
-    ///   `dyn` types cannot use this trait outside this [`crate`].
-    ///
-    /// As long as any one of the above rules hold, the forbidding
-    /// can be achieved. Otherwise, this trait should be fixed.
-    ///
-    /// # Explainer of the forbidding
-    ///
-    /// Some type like `dyn SealedIdentical<()>` implements
-    /// `SealedIdentical<()>`, meaning that the type `dyn SealedIdentical<()>`
-    /// is identical to the type `()`, which is a conflict.
-    /// Therefore, this trait should **not** be used in `dyn` types,
-    /// and **neither** should [`Identical`].
-    type NonDynBound<U: ?Sized>: ?Sized;
-}
+mod sealing_traits {
+    //! Sealing traits.
 
-impl<T: ?Sized> SealedIdentical<T> for T {
-    type NonDynBound<U: ?Sized> = U;
+    /// The sealed version of [`Identical`].
+    ///
+    /// This trait is the underlying trait of [`Identical`].
+    /// This trait is used for:
+    ///
+    /// * Freezing the implementation of [`Identical`].
+    /// * Forbidding [`Identical`] to be used in `dyn` types.
+    pub trait PrivateIdentical<T: ?Sized> {
+        /// An associated type that forbidding this trait
+        /// to be used as trait or supertrait bounds in any `dyn` types,
+        /// at least outside this [`crate`].
+        ///
+        /// # Approaches to achieving the forbidding
+        ///
+        /// This type achieves the forbidding through
+        /// the following rules:
+        ///
+        /// * This type is **not** dyn compatible, so that this
+        ///   trait is **not** dyn compatible.
+        /// * This type is sealed, so that `dyn` types cannot specify
+        ///   this associated type outside this [`crate`].
+        ///   Because `dyn` types have to specify their associated types,
+        ///   `dyn` types cannot use this trait outside this [`crate`].
+        ///
+        /// As long as any one of the above rules hold, the forbidding
+        /// can be achieved. Otherwise, this trait should be fixed.
+        ///
+        /// # Explainer of the forbidding
+        ///
+        /// Some type like `dyn SealedIdentical<()>` implements
+        /// `SealedIdentical<()>`, meaning that the type `dyn SealedIdentical<()>`
+        /// is identical to the type `()`, which is a conflict.
+        /// Therefore, this trait should **not** be used in `dyn` types,
+        /// and **neither** should [`Identical`].
+        type NonDynBound<U: ?Sized>: ?Sized;
+    }
+
+    impl<T: ?Sized> PrivateIdentical<T> for T {
+        type NonDynBound<U: ?Sized> = U;
+    }
 }
 
 /// This trait denotes that `Self` is identical to `T`.
@@ -115,13 +119,12 @@ impl<T: ?Sized> SealedIdentical<T> for T {
 /// * `U: Identical<T>` can help to infer `T` from `U`, but cannot
 ///   help to infer `U` from `T`. `T: Identical<U>` can be
 ///   added to help to infer `U` from `T`.
-#[allow(private_bounds)]
 pub trait Identical<T: ?Sized>:
     // According to `SealedIdentical::NonDynBound`,
     // any associated type of `SealedIdentical` should not be
     // specified here because of the approaches to achieving
     // the forbidding (see `SealedIdentical::NonDynBound`).
-    SealedIdentical<T>
+    sealing_traits::PrivateIdentical<T>
 {
 }
 
