@@ -64,13 +64,17 @@ pub struct Assertion;
 mod sealing_traits {
     //! Sealing traits.
 
-    /// The sealed version of [`Identical`].
+    /// A private version of [`Identical`].
+    ///
+    /// [`Identical`]: super::Identical
     ///
     /// This trait is the underlying trait of [`Identical`].
     /// This trait is used for:
     ///
-    /// * Freezing the implementation of [`Identical`].
-    /// * Forbidding [`Identical`] to be used in `dyn` types.
+    /// * Sealing [`Identical`], forbidding implementation outside
+    ///   this [`crate`].
+    /// * Forbidding [`Identical`] to be used in `dyn` types
+    ///   at least outside this [`crate`].
     pub trait PrivateIdentical<T: ?Sized> {
         /// An associated type that forbidding this trait
         /// to be used as trait or supertrait bounds in any `dyn` types,
@@ -83,7 +87,7 @@ mod sealing_traits {
         ///
         /// * This type is **not** dyn compatible, so that this
         ///   trait is **not** dyn compatible.
-        /// * This type is sealed, so that `dyn` types cannot specify
+        /// * This type is private, so that `dyn` types cannot specify
         ///   this associated type outside this [`crate`].
         ///   Because `dyn` types have to specify their associated types,
         ///   `dyn` types cannot use this trait outside this [`crate`].
@@ -93,11 +97,14 @@ mod sealing_traits {
         ///
         /// # Explainer of the forbidding
         ///
-        /// Some type like `dyn SealedIdentical<()>` implements
-        /// `SealedIdentical<()>`, meaning that the type `dyn SealedIdentical<()>`
+        /// Some type like `dyn PrivateIdentical<()>` implements
+        /// `PrivateIdentical<()>`, meaning that the type
+        /// `dyn PrivateIdentical<()>`
         /// is identical to the type `()`, which is a conflict.
         /// Therefore, this trait should **not** be used in `dyn` types,
         /// and **neither** should [`Identical`].
+        ///
+        /// [`Identical`]: super::Identical
         type NonDynBound<U: ?Sized>: ?Sized;
     }
 
@@ -120,10 +127,10 @@ mod sealing_traits {
 ///   help to infer `U` from `T`. `T: Identical<U>` can be
 ///   added to help to infer `U` from `T`.
 pub trait Identical<T: ?Sized>:
-    // According to `SealedIdentical::NonDynBound`,
-    // any associated type of `SealedIdentical` should not be
+    // According to `PrivateIdentical::NonDynBound`,
+    // any associated type of `PrivateIdentical` should not be
     // specified here because of the approaches to achieving
-    // the forbidding (see `SealedIdentical::NonDynBound`).
+    // the forbidding (see `PrivateIdentical::NonDynBound`).
     sealing_traits::PrivateIdentical<T>
 {
 }
