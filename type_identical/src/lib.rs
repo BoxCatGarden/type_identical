@@ -113,7 +113,7 @@ mod private_identical {
     /// * Forbidding [`Identical`] to be used in `dyn` types
     ///   at least outside this [`crate`].
     ///
-    /// # Explainer of forbidding the uses in `dyn` types
+    /// # Explainer of forbidding the use in `dyn` types
     ///
     /// Some type like `dyn PrivateIdentical<()>` implements
     /// `PrivateIdentical<()>`, meaning that the type

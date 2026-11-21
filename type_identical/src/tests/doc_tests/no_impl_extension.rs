@@ -4,7 +4,7 @@
 
 /// ```compile_fail
 /// struct Bar;
-/// impl type_identical::sealing_traits::PrivateIdentical<()> for Bar {}
+/// impl type_identical::private_identical::PrivateIdentical<()> for Bar {}
 /// ```
 ///
 ///
@@ -26,7 +26,7 @@
 ///
 /// impl<T: ?Sized> Identical<T> for Bar<T>
 /// where
-///     Bar<T>: type_identical::sealing_traits::PrivateIdentical<T>,
+///     Bar<T>: type_identical::private_identical::PrivateIdentical<T>,
 /// {
 /// }
 /// ```
