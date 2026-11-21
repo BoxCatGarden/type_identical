@@ -71,8 +71,8 @@ mod sealing_traits {
     /// This trait is the underlying trait of [`Identical`].
     /// This trait is used for:
     ///
-    /// * Sealing [`Identical`], forbidding implementation outside
-    ///   this [`crate`].
+    /// * Sealing [`Identical`], forbidding any extensions of
+    ///   the implementations of [`Identical`] outside this [`crate`].
     /// * Forbidding [`Identical`] to be used in `dyn` types
     ///   at least outside this [`crate`].
     pub trait PrivateIdentical<T: ?Sized> {
