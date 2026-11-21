@@ -61,16 +61,16 @@ impl<T: ?Sized> Assert for T {
 /// ```
 pub struct Assertion;
 
-mod sealing_traits {
-    //! Sealing traits.
+mod private_identical {
+    //! The trait [`PrivateIdentical`].
 
-    /// A trait that cannot be used trait or supertrait bounds
+    /// A trait that cannot be used as trait or supertrait bounds
     /// in any `dyn` types, at least outside this module.
     ///
     /// This trait is not for types but for other traits,
     /// forbidding its subtraits to be used in `dyn` types.
     trait NonDynBound {
-        /// An associated type that forbidding this trait
+        /// An associated type that forbids this trait
         /// to be used as trait or supertrait bounds in any `dyn` types,
         /// at least outside this module.
         ///
@@ -79,15 +79,22 @@ mod sealing_traits {
         /// This type achieves the forbidding through
         /// the following rules:
         ///
-        /// * This type is **not** dyn compatible, so that this
-        ///   trait is **not** dyn compatible.
-        /// * This type is private, so that `dyn` types cannot specify
-        ///   this associated type outside this module.
-        ///   Because `dyn` types have to specify their associated types,
-        ///   `dyn` types cannot use this trait outside this module.
+        /// 1. This type is **not** dyn compatible, so that this
+        ///    trait is **not** dyn compatible.
+        /// 2. This type is private, so that `dyn` types cannot specify
+        ///    this associated type outside this module.
+        ///    Because `dyn` types have to specify their associated types,
+        ///    `dyn` types cannot use this trait outside this module.
         ///
         /// As long as any one of the above rules holds, the forbidding
         /// can be achieved. Otherwise, this trait should be fixed.
+        ///
+        /// # No equality constraints in trait bounds
+        ///
+        /// This type should not have an equality constraint (i.e., `= M`)
+        /// when this trait is used as a trait bound, in order to ensure
+        /// that this type is not specified by a subtrait of this trait,
+        /// so that the rule (2) can work when it holds.
         type NonDynBound<U: ?Sized>: ?Sized;
     }
 
@@ -99,49 +106,25 @@ mod sealing_traits {
     ///
     /// [`Identical`]: super::Identical
     ///
-    /// This trait is the underlying trait of [`Identical`].
     /// This trait is used for:
     ///
     /// * Sealing [`Identical`], forbidding any extensions of
     ///   the implementations of [`Identical`] outside this [`crate`].
     /// * Forbidding [`Identical`] to be used in `dyn` types
     ///   at least outside this [`crate`].
-    pub trait PrivateIdentical<T: ?Sized> {
-        /// An associated type that forbidding this trait
-        /// to be used as trait or supertrait bounds in any `dyn` types,
-        /// at least outside this [`crate`].
-        ///
-        /// # Approaches to achieving the forbidding
-        ///
-        /// This type achieves the forbidding through
-        /// the following rules:
-        ///
-        /// * This type is **not** dyn compatible, so that this
-        ///   trait is **not** dyn compatible.
-        /// * This type is private, so that `dyn` types cannot specify
-        ///   this associated type outside this [`crate`].
-        ///   Because `dyn` types have to specify their associated types,
-        ///   `dyn` types cannot use this trait outside this [`crate`].
-        ///
-        /// As long as any one of the above rules hold, the forbidding
-        /// can be achieved. Otherwise, this trait should be fixed.
-        ///
-        /// # Explainer of the forbidding
-        ///
-        /// Some type like `dyn PrivateIdentical<()>` implements
-        /// `PrivateIdentical<()>`, meaning that the type
-        /// `dyn PrivateIdentical<()>`
-        /// is identical to the type `()`, which is a conflict.
-        /// Therefore, this trait should **not** be used in `dyn` types,
-        /// and **neither** should [`Identical`].
-        ///
-        /// [`Identical`]: super::Identical
-        type NonDynBound<U: ?Sized>: ?Sized;
-    }
+    ///
+    /// # Explainer of forbidding the uses in `dyn` types
+    ///
+    /// Some type like `dyn PrivateIdentical<()>` implements
+    /// `PrivateIdentical<()>`, meaning that the type
+    /// `dyn PrivateIdentical<()>`
+    /// is identical to the type `()`, which is a conflict.
+    /// Therefore, this trait should **not** be used in `dyn` types,
+    /// and **neither** should [`Identical`].
+    #[allow(private_bounds, reason = "NonDynBound")]
+    pub trait PrivateIdentical<T: ?Sized>: NonDynBound {}
 
-    impl<T: ?Sized> PrivateIdentical<T> for T {
-        type NonDynBound<U: ?Sized> = U;
-    }
+    impl<T: ?Sized> PrivateIdentical<T> for T {}
 }
 
 /// This trait denotes that `Self` is identical to `T`.
@@ -157,14 +140,7 @@ mod sealing_traits {
 /// * `U: Identical<T>` can help to infer `T` from `U`, but cannot
 ///   help to infer `U` from `T`. `T: Identical<U>` can be
 ///   added to help to infer `U` from `T`.
-pub trait Identical<T: ?Sized>:
-    // According to `PrivateIdentical::NonDynBound`,
-    // any associated type of `PrivateIdentical` should not be
-    // specified here because of the approaches to achieving
-    // the forbidding (see `PrivateIdentical::NonDynBound`).
-    sealing_traits::PrivateIdentical<T>
-{
-}
+pub trait Identical<T: ?Sized>: private_identical::PrivateIdentical<T> {}
 
 impl<T: ?Sized> Identical<T> for T {}
 
