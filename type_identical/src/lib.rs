@@ -64,6 +64,37 @@ pub struct Assertion;
 mod sealing_traits {
     //! Sealing traits.
 
+    /// A trait that cannot be used trait or supertrait bounds
+    /// in any `dyn` types, at least outside this module.
+    ///
+    /// This trait is not for types but for other traits,
+    /// forbidding its subtraits to be used in `dyn` types.
+    trait NonDynBound {
+        /// An associated type that forbidding this trait
+        /// to be used as trait or supertrait bounds in any `dyn` types,
+        /// at least outside this module.
+        ///
+        /// # Approaches to achieving the forbidding
+        ///
+        /// This type achieves the forbidding through
+        /// the following rules:
+        ///
+        /// * This type is **not** dyn compatible, so that this
+        ///   trait is **not** dyn compatible.
+        /// * This type is private, so that `dyn` types cannot specify
+        ///   this associated type outside this module.
+        ///   Because `dyn` types have to specify their associated types,
+        ///   `dyn` types cannot use this trait outside this module.
+        ///
+        /// As long as any one of the above rules holds, the forbidding
+        /// can be achieved. Otherwise, this trait should be fixed.
+        type NonDynBound<U: ?Sized>: ?Sized;
+    }
+
+    impl<T: ?Sized> NonDynBound for T {
+        type NonDynBound<U: ?Sized> = U;
+    }
+
     /// A private version of [`Identical`].
     ///
     /// [`Identical`]: super::Identical
