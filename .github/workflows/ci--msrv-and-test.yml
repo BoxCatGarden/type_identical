@@ -42,7 +42,7 @@ jobs:
 
       - name: MSRV verify doctest
         run: >
-          cargo msrv verify --
+          rustup run 1.89.0
           cargo test --doc --workspace
 
       - name: MSRV verify build
