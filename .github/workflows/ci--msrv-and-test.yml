@@ -47,11 +47,11 @@ jobs:
 
       - name: MSRV verify test
         run: >
-          cargo msrv --log-level trace --log-target stdout verify --
-          cargo test --workspace --profile test --verbose
-          --no-fail-fast -- --test-threads 5 --show-output
+          cargo msrv verify --
+          cargo test --doc --workspace --profile test --verbose
+          --no-fail-fast -- --test-threads 5
       - name: MSRV verify test release
         run: >
-          cargo msrv --log-level trace --log-target stdout verify --
+          cargo msrv verify --
           cargo test --workspace --release --verbose
           --no-fail-fast -- --test-threads 5 --show-output
