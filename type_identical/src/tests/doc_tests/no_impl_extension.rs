@@ -3,6 +3,12 @@
 //! are forbidden to be extended outside this [`crate`].
 
 /// ```compile_fail
+/// use type_identical::PrivateIdentical;
+/// ```
+///
+///
+///
+/// ```compile_fail
 /// struct Bar;
 /// impl type_identical::private_identical::PrivateIdentical<()> for Bar {}
 /// ```
