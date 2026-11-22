@@ -42,16 +42,16 @@ jobs:
 
       - name: MSRV verify build
         run: >
-          cargo msrv verify --
+          cargo msrv --log-target stdout verify --
           cargo build --workspace --release --verbose
 
       - name: MSRV verify test
         run: >
-          cargo msrv verify --
+          cargo msrv --log-target stdout verify --
           cargo test --workspace --profile test --verbose
           --no-fail-fast -- --test-threads 5 --show-output
       - name: MSRV verify test release
         run: >
-          cargo msrv verify --
+          cargo msrv --log-target stdout verify --
           cargo test --workspace --release --verbose
           --no-fail-fast -- --test-threads 5 --show-output
