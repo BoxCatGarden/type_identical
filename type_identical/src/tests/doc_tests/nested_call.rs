@@ -33,7 +33,7 @@
 /// ```no_run
 /// use type_identical::*;
 ///
-/// fn aaa<T: ?Sized + Assert<Type<U> = T, Type<T> = T>, U: ?Sized>() {
+/// fn aaa<T: ?Sized + Assert<Type<U> = T> + Assert<Type<T> = T>, U: ?Sized>() {
 ///     aaa::<T, T>();
 ///     aaa::<T, U>();
 ///     aaa::<U, _>();

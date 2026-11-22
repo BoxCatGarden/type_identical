@@ -7,7 +7,7 @@
 /// ```compile_fail
 /// use type_identical::*;
 ///
-/// type AAA<T> = dyn Identical<T>;
+/// fn bbb<T: ?Sized>(_: &dyn Identical<T>) {}
 /// ```
 ///
 ///
@@ -15,7 +15,7 @@
 /// ```compile_fail
 /// use type_identical::*;
 ///
-/// type AAA<T, U> = dyn Identical<T, NonDynBound<U> = U>;
+/// fn bbb<T: ?Sized, U: ?Sized>(_: &dyn Identical<T, NonDynBound<U> = U>) {}
 /// ```
 ///
 ///
