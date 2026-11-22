@@ -40,6 +40,11 @@ jobs:
       - name: MSRV verify
         run: cargo msrv verify --workspace
 
+      - name: MSRV verify doctest
+        run: >
+          cargo msrv verify --
+          cargo test --doc --workspace
+
       - name: MSRV verify build
         run: >
           cargo msrv verify --
@@ -49,11 +54,11 @@ jobs:
         run: >
           cargo msrv verify --
           cargo test --workspace --profile test --verbose
-          --no-fail-fast --error-format json
+          --no-fail-fast
           -- --test-threads 5 --show-output
       - name: MSRV verify test release
         run: >
           cargo msrv verify --
           cargo test --workspace --release --verbose
-          --no-fail-fast --error-format json
+          --no-fail-fast
           -- --test-threads 5 --show-output
